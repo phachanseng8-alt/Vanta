@@ -24,7 +24,7 @@ self.addEventListener('notificationclick',e=>{
   const url=new URL((e.notification.data&&e.notification.data.url)||'#admin',self.registration.scope).href;
   e.waitUntil((async()=>{
     const cl=await self.clients.matchAll({type:'window',includeUncontrolled:true});
-    for(const c of cl){if(c.url.startsWith(self.registration.scope)){await c.focus();return}}
+    for(const c of cl){if(c.url.startsWith(self.registration.scope)){await c.focus();try{c.postMessage({type:'goto'})}catch(_){}return}}
     await self.clients.openWindow(url);
   })());
 });
